@@ -21,22 +21,38 @@ def listDir(path):
             fileList.append(os.path.join(root, f))
 
     return fileList
-
 # End of listDir method
 
 # Compare files between two directories method
 def compareDir(list1, list2):
-    # Remove elements present in 'backup' that are not present in 'original'
+
+    # Auxiliary list for relativizing
+    l1 = relativize(list1)
+    l2 = relativize(list2)
+
+    # Remove elements present in backup that are not present in original
     # before comparing both lists
+    for i in range(len(l2)):
+        if l2[i] not in l1:
+            # Remove from backup list
+            list2.pop(i)
 
-    # Iterate through a copy
-    for i in list2[:]:
-
-        # Get only the file name
-        i = i[ (i.rfind("\\") + 1) : ] # rfind() - find last occurence of string
-        print(i)
+    # Check for files that are missing in backup
+    for i in range(len(l1)):
+        if l1[i] not in l2:
+            # Add missing files to backup
+            pass
 
 # End of compareDir method
+
+# Remove root path from files
+def relativize(list):
+    for i in range(len(list)):
+        list[i] = list[i][ (list[i].rfind("\\") + 1) : ]
+
+    return list
+# End of relativize method
+
 
 
 # Check if original path exists
